@@ -15,6 +15,36 @@ const createUser = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: err.message
+
+        })
+    }
+}
+
+const loginUser = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    try {
+        const result = await authServices.loginUser(email, password);
+        console.log(result)
+
+        if (!result) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Login successful",
+            data: {
+                token: `Bearer ${result.token}`,
+                user: result.user,
+            }
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message
         })
     }
 }
@@ -24,4 +54,5 @@ const createUser = async (req: Request, res: Response) => {
 
 export const authControllers = {
     createUser,
+    loginUser
 };
