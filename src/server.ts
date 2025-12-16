@@ -1,6 +1,13 @@
 import express, { Request, Response } from "express"
-const app = express()
-const port = 5000
+import config from "./config"
+import initDB from "./config/db";
+const app = express();
+
+const port = config.port
+
+// initialize DB
+initDB();
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!')
