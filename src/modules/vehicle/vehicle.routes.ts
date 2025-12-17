@@ -7,5 +7,7 @@ const router = Router();
 
 router.post("/", vehicleControllers.addVehicle);
 
+router.get("/", vehicleControllers.getAllVehicles)
+
 
 export const vehicleRoutes = router;
