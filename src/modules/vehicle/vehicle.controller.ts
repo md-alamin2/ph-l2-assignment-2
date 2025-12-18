@@ -58,6 +58,59 @@ const getSingleVehicles = async (req: Request, res: Response) => {
                 data: result.rows[0]
             })
         }
+
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
+const updateVehicle = async(req: Request, res: Response)=>{
+    const {vehicleId}= req.params;
+    try {
+        const result = await vehicleServices.updateVehicle(vehicleId as string, req.body);
+
+        if (result.rows.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: "Vehicle not found"
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                message: "Vehicle updated successfully",
+                data: result.rows[0]
+            })
+        }
+
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
+
+const deleteUser = async (req: Request, res: Response) => {
+    const id = req.params.vehicleId;
+    try {
+        const result = await vehicleServices.deleteVehicle(id as string);
+
+        if (result.rowCount === 0) {
+            res.status(404).json({
+                success: false,
+                message: 'Vehicle not found'
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                message: "Vehicle deleted successfully"
+            })
+        }
+
     } catch (err: any) {
         res.status(500).json({
             success: false,
@@ -70,5 +123,7 @@ const getSingleVehicles = async (req: Request, res: Response) => {
 export const vehicleControllers = {
     addVehicle,
     getAllVehicles,
-    getSingleVehicles
+    getSingleVehicles,
+    updateVehicle,
+    deleteUser
 }
