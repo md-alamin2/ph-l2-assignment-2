@@ -37,7 +37,7 @@ const loginUser = async (req: Request, res: Response) => {
             success: true,
             message: "Login successful",
             data: {
-                token: `Bearer ${result.token}`,
+                token: result.token,
                 user: result.user,
             }
         })
