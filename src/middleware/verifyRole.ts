@@ -3,24 +3,24 @@ import { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import config from "../config";
 
-const auth = (...role: string[]) => {
+const verifyRole = (...role: string[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        // console.log(req)
+
         try {
             const tokenWithBearer = req.headers.authorization;
             const token = tokenWithBearer?.split(" ")[1];
-            console.log(token)
             if (!token) {
                 return res.status(401).json({
                     message: 'Unauthorized access',
                     success: false
                 })
             }
+
             const decoded = jwt.verify(token, config.jwt_secret as string)as JwtPayload;
-            console.log(decoded)
+
             req.user = decoded;
 
-            console.log(role)
+
             if(role.length && !role.includes(decoded.role)){
                 return res.status(403 ).json({
                     success: false,
@@ -38,4 +38,4 @@ const auth = (...role: string[]) => {
 }
 
 
-export default auth;
+export default verifyRole;

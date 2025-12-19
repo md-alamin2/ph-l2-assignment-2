@@ -21,6 +21,26 @@ const getAllUsers = async (req: Request, res: Response) => {
     }
 }
 
+const updateUser = async (req: Request, res: Response) => {
+    try {
+        const { id, role } = req.user as { id: number, role: string };
+        const result = await userServices.updateUser(req.params.userId as string, req.body, { id, role });
+
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            data: result.rows[0],
+        });
+
+
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
 
 const deleteUser = async (req: Request, res: Response) => {
     const id = req.params.userId;
@@ -51,5 +71,6 @@ const deleteUser = async (req: Request, res: Response) => {
 
 export const userControllers = {
     getAllUsers,
-    deleteUser
+    deleteUser,
+    updateUser
 }

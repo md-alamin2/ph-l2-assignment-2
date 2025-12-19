@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { userControllers } from "./user.controller";
-import auth from "../../middleware/verifyCustomer";
+import verifyRole from "../../middleware/verifyRole";
 
 const router = Router();
 
 // user routes
-router.get("/", auth('Admin'), userControllers.getAllUsers);
+router.get("/", verifyRole('admin'), userControllers.getAllUsers);
 
-router.delete("/:userId", auth('Admin'), userControllers.deleteUser)
+router.put("/:userId", verifyRole('admin', 'customer'), userControllers.updateUser)
+
+router.delete("/:userId", verifyRole('admin'), userControllers.deleteUser)
 
 export const userRoutes = router;
