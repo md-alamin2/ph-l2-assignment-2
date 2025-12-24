@@ -14,7 +14,8 @@ const addVehicle = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: err.message
+            message: err.message,
+            errors: err.message
         })
     }
 }
@@ -36,7 +37,8 @@ const getAllVehicles = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: err.message
+            message: err.message,
+            errors: err.message
         })
     }
 }
@@ -49,7 +51,8 @@ const getSingleVehicles = async (req: Request, res: Response) => {
         if (result.rows.length === 0) {
             res.status(404).json({
                 success: false,
-                message: "Vehicle not found"
+                message: "Vehicle not found",
+                errors: "Vehicle not found"
             })
         } else {
             res.status(200).json({
@@ -62,7 +65,8 @@ const getSingleVehicles = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: err.message
+            message: err.message,
+            errors: err.message
         })
     }
 }
@@ -75,7 +79,8 @@ const updateVehicle = async(req: Request, res: Response)=>{
         if (result.rows.length === 0) {
             res.status(404).json({
                 success: false,
-                message: "Vehicle not found"
+                message: "Vehicle not found",
+                errors: "Vehicle not found"
             })
         } else {
             res.status(200).json({
@@ -88,7 +93,8 @@ const updateVehicle = async(req: Request, res: Response)=>{
     } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: err.message
+            message: err.message,
+            errors: err.message
         })
     }
 }
@@ -102,7 +108,8 @@ const deleteUser = async (req: Request, res: Response) => {
         if (result.rowCount === 0) {
             res.status(404).json({
                 success: false,
-                message: 'Vehicle not found'
+                message: 'Vehicle not found',
+                errors: 'Vehicle not found'
             })
         } else {
             res.status(200).json({
@@ -112,10 +119,19 @@ const deleteUser = async (req: Request, res: Response) => {
         }
 
     } catch (err: any) {
-        res.status(500).json({
-            success: false,
-            message: err.message
-        })
+        if (err.message.includes('active bookings')) {
+            res.status(409).json({
+                success: false,
+                message: err.message,
+                errors: err.message
+            })
+        } else {
+            res.status(500).json({
+                success: false,
+                message: err.message,
+                errors: err.message
+            })
+        }
     }
 }
 

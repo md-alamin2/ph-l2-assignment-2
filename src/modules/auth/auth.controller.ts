@@ -14,8 +14,8 @@ const createUser = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: err.message
-
+            message: err.message,
+            errors: err.message
         })
     }
 }
@@ -30,6 +30,7 @@ const loginUser = async (req: Request, res: Response) => {
             return res.status(401).json({
                 success: false,
                 message: 'Invalid email or password',
+                errors: 'Invalid email or password'
             });
         }
 
@@ -44,7 +45,8 @@ const loginUser = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: err.message
+            message: err.message,
+            errors: err.message
         })
     }
 }
