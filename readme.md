@@ -1,40 +1,53 @@
-# Vehicle Rental Booking System API
+# 🚗 Vehicle Rental Booking System API
 
-Project Live URL: https://vehicle-rentel-backend.vercel.app/
+> A professional-grade Node.js/Express REST API for comprehensive vehicle rental and booking management with JWT authentication, role-based access control, and advanced booking workflows.
 
+**Live API:** [https://vehicle-rentel-backend.vercel.app/](https://vehicle-rentel-backend.vercel.app/)
 
-Overview
 ---
-A robust Node.js/Express API for managing vehicle rental bookings with user authentication, vehicle management, and booking tracking.
 
+## Overview
+
+A robust Node.js/Express API for managing vehicle rental bookings with user authentication, vehicle management, and booking tracking. Built with TypeScript for type safety and PostgreSQL for reliable data persistence.
+
+---
 
 ## ✨ Features
 
-- **User Authentication**: JWT-based login and registration
-- **User Management**: Create, retrieve, and update user profiles
-- **Vehicle Management**: Add, view, update, and manage vehicles
-- **Booking System**: Create bookings, manage booking status, and track rental history
-- **Role-Based Access Control**: Admin and customer roles with appropriate permissions
-- **Deletion Constraints**: Prevent deletion of users/vehicles with active bookings
-- **Automatic Booking Updates**: Scheduled background jobs for expired bookings
-- **Error Handling**: Standardized error response structure across all endpoints
+| Feature | Description |
+|---------|-------------|
+| 🔐 **JWT Authentication** | Secure token-based user registration and login |
+| 👤 **User Management** | Create, retrieve, and update user profiles with role-based access |
+| 🚙 **Vehicle Management** | Add, view, update, and manage vehicles with availability status |
+| 📅 **Booking System** | Create bookings, manage status (active/cancelled/returned), track rental history |
+| 🛡️ **Role-Based Access** | Admin and customer roles with appropriate permissions |
+| 🚫 **Deletion Constraints** | Prevent deletion of users/vehicles with active bookings |
+| ⏰ **Automatic Updates** | Background jobs for expired and overdue bookings |
+| 📊 **Standardized Responses** | Consistent JSON error response structure across all endpoints |
 
-## 🛠 Tech Stack
+---
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Language**: TypeScript
-- **Database**: PostgreSQL
-- **Authentication**: JWT (JSON Web Tokens)
-- **Password Hashing**: bcrypt
-- **Task Scheduling**: node-cron
-- **Development**: tsx (TypeScript runner)
+## 🛠 Technology Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Runtime** | Node.js |
+| **Framework** | Express.js (v5.2.1) |
+| **Language** | TypeScript |
+| **Database** | PostgreSQL |
+| **Authentication** | JWT (jsonwebtoken) |
+| **Password Security** | bcrypt |
+| **Task Scheduling** | node-cron |
+| **Dev Runtime** | tsx |
+
+---
 
 ## 📁 Project Structure
 
 ```
 src/
 ├── server.ts                 # Main application entry point
+├── app.ts                    # Express app configuration
 ├── config/
 │   ├── db.ts                # Database connection pool
 │   └── index.ts             # Configuration exports
@@ -57,130 +70,185 @@ src/
 │       ├── booking.controller.ts
 │       ├── booking.service.ts
 │       ├── booking.routes.ts
-│       └── autoUpdate.ts     # Automatic booking status updates
+│       └── autoUpdate.ts
 └── type/
     └── express/
-        └── index.d.ts        # Express type definitions
+        └── index.d.ts
 ```
 
-## 🚀 Installation
+---
 
-1. **Clone the repository**
+## 🚀 Installation & Setup
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/md-alamin2/ph-l2-assignment-2.git
 cd assignment-2
 ```
 
-2. **Install dependencies**
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-3. **Set up environment variables**
+### 3. Environment Configuration
+Create a `.env` file in the project root with the following variables:
+
+```env
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=vehicle_rental_db
+JWT_SECRET=your_secure_jwt_secret_key
+JWT_EXPIRATION=7d
+PORT=5000
+NODE_ENV=development
+```
+
+---
 
 ## ▶️ Running the Application
 
-### Development Mode
+### Development Mode (with Hot Reload)
 ```bash
 npm run dev
 ```
-The application will start with hot-reload enabled using `tsx watch`.
 
-### Building for Production
+### Production Build
 ```bash
 npx tsc
 ```
 
+---
+
 ## 📚 API Endpoints
 
-### Authentication
+All endpoints are organized by module with clear authentication requirements:
+- 🔐 **Public** - No authentication required
+- 🔒 **(Admin & Customer)** - Requires JWT token
+- 🛡️ **(Admin Only)** - Admin role required
 
-Get 🔐 User Registration
-```
-https://vehicle-rentel-backend.vercel.app/api/auth/register
-```
+### 🔐 Authentication
 
-Get 🔐 User Login
-```
-https://vehicle-rentel-backend.vercel.app/api/auth/login
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `POST /api/auth/register` | User Registration |
+| POST | `POST /api/auth/login` | User Login |
 
-### Users
-
-Get ⚡ All Users 🛡️ (Admin Only)
+**Register User**
 ```
-https://vehicle-rentel-backend.vercel.app/api/users
+POST https://vehicle-rentel-backend.vercel.app/api/auth/register
 ```
 
-Get ⚡ Single User 🔒 (Customer)
+**User Login**
 ```
-https://vehicle-rentel-backend.vercel.app/api/users/:userId
-```
-
-Update ✏️ User Profile 🔒 (Customer)
-```
-https://vehicle-rentel-backend.vercel.app/api/users/:userId
+POST https://vehicle-rentel-backend.vercel.app/api/auth/login
 ```
 
-Delete 🗑️ User 🔒 (Customer)
+---
+
+### 👥 Users
+
+| Method | Access | Endpoint | Description |
+|--------|--------|----------|-------------|
+| GET | 🛡️ Admin Only | `/api/users` | Retrieve all users |
+| GET | 🔒 Admin & Customer | `/api/users/:userId` | Get specific user |
+| PATCH | 🔒 Admin & Customer | `/api/users/:userId` | Update user profile |
+| DELETE | 🔒 Admin & Customer | `/api/users/:userId` | Delete user account |
+
+**Get All Users** 🛡️ (Admin Only)
 ```
-https://vehicle-rentel-backend.vercel.app/api/users/:userId
+GET https://vehicle-rentel-backend.vercel.app/api/users
 ```
 
-### Vehicles
-
-Post ➕ Add New Vehicle 🛡️ (Admin Only)
+**Get Single User** 🔒 (Admin & Customer)
 ```
-https://vehicle-rentel-backend.vercel.app/api/vehicles
+GET https://vehicle-rentel-backend.vercel.app/api/users/:userId
 ```
 
-Get ⚡ All Vehicles
+**Update User Profile** 🔒 (Admin & Customer)
 ```
-https://vehicle-rentel-backend.vercel.app/api/vehicles
-```
-
-Get ⚡ Single Vehicle
-```
-https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+PATCH https://vehicle-rentel-backend.vercel.app/api/users/:userId
 ```
 
-Update ✏️ Vehicle 🛡️ (Admin Only)
+**Delete User** 🔒 (Admin & Customer)
 ```
-https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
-```
-
-Delete 🗑️ Vehicle 🔒 (Customer)
-```
-https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+DELETE https://vehicle-rentel-backend.vercel.app/api/users/:userId
 ```
 
-### Bookings
+---
 
-Post ➕ Create Booking 🔒 (Customer)
+### 🚗 Vehicles
+
+| Method | Access | Endpoint | Description |
+|--------|--------|----------|-------------|
+| POST | 🛡️ Admin Only | `/api/vehicles` | Add new vehicle |
+| GET | 🔐 Public | `/api/vehicles` | List all vehicles |
+| GET | 🔐 Public | `/api/vehicles/:vehicleId` | Get vehicle details |
+| PATCH | 🛡️ Admin Only | `/api/vehicles/:vehicleId` | Update vehicle |
+| DELETE | 🔒 Admin & Customer | `/api/vehicles/:vehicleId` | Delete vehicle |
+
+**Add New Vehicle** 🛡️ (Admin Only)
 ```
-https://vehicle-rentel-backend.vercel.app/api/bookings
+POST https://vehicle-rentel-backend.vercel.app/api/vehicles
 ```
 
-Get ⚡ All Bookings 🔒 (Customer)
+**Get All Vehicles** 🔐
 ```
-https://vehicle-rentel-backend.vercel.app/api/bookings
+GET https://vehicle-rentel-backend.vercel.app/api/vehicles
 ```
 
-Update ✏️ Booking Status 🔒 (Customer)
+**Get Single Vehicle** 🔐
 ```
-https://vehicle-rentel-backend.vercel.app/api/bookings/:bookingId
+GET https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+```
+
+**Update Vehicle** 🛡️ (Admin Only)
+```
+PATCH https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+```
+
+**Delete Vehicle** 🔒 (Admin & Customer)
+```
+DELETE https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+```
+
+---
+
+### 📅 Bookings
+
+| Method | Access | Endpoint | Description |
+|--------|--------|----------|-------------|
+| POST | 🔒 Admin & Customer | `/api/bookings` | Create new booking |
+| GET | 🔒 Admin & Customer | `/api/bookings` | Get bookings |
+| PATCH | 🔒 Admin & Customer | `/api/bookings/:bookingId` | Update booking status |
+
+**Create Booking** 🔒 (Admin & Customer)
+```
+POST https://vehicle-rentel-backend.vercel.app/api/bookings
+```
+
+**Get All Bookings** 🔒 (Admin & Customer)
+```
+GET https://vehicle-rentel-backend.vercel.app/api/bookings
+```
+
+**Update Booking Status** 🔒 (Admin & Customer)
+```
+PATCH https://vehicle-rentel-backend.vercel.app/api/bookings/:bookingId
 ```
 
 ---
 
 ## 👨‍💻 Developer
 
-**Md. Al-amin**
-- Email: mdalamin22671@gmail.com
-- GitHub: https://github.com/md-alamin2
+**Md. Alamin**
+- 📧 Email: [mdalamin22671@gmail.com](mailto:mdalamin22671@gmail.com)
+- 🔗 GitHub: [github.com/md-alamin2](https://github.com/md-alamin2)
 
 ---
 
 ## 📎 License
 
-This project is open source and free to use for learning and portfolio purposes.
+This project is open source and available under the ISC License. Free to use for learning and portfolio purposes.
