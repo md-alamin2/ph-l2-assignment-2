@@ -1,18 +1,12 @@
 # Vehicle Rental Booking System API
 
+Project Live URL: https://your-live-url.example.com
+
+
+Overview
+---
 A robust Node.js/Express API for managing vehicle rental bookings with user authentication, vehicle management, and booking tracking.
 
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Environment Variables](#environment-variables)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-- [Error Handling](#error-handling)
-- [Database Schema](#database-schema)
 
 ## ✨ Features
 
@@ -21,62 +15,102 @@ A robust Node.js/Express API for managing vehicle rental bookings with user auth
 - **Vehicle Management**: Add, view, update, and manage vehicles
 - **Booking System**: Create bookings, manage booking status, and track rental history
 - **Role-Based Access Control**: Admin and customer roles with appropriate permissions
-*** Begin File
-# Assignment-2 — Vehicle Rental Booking API
+- **Deletion Constraints**: Prevent deletion of users/vehicles with active bookings
+- **Automatic Booking Updates**: Scheduled background jobs for expired bookings
+- **Error Handling**: Standardized error response structure across all endpoints
 
-Project Live URL: https://your-live-url.example.com
+## 🛠 Tech Stack
 
-Overview
----
-Professional backend API for vehicle rental booking management, including user authentication, role-based access, vehicle administration, and booking workflows.
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **Authentication**: JWT (JSON Web Tokens)
+- **Password Hashing**: bcrypt
+- **Task Scheduling**: node-cron
+- **Development**: tsx (TypeScript runner)
 
-Features
----
-- JWT-based user authentication and registration
-- Role-based access control (admin, customer)
-- Vehicle CRUD and availability management
-- Booking creation, cancellation, and return handling
-- Deletion constraints: block deleting users or vehicles with active bookings
-- Standardized JSON error responses
+## 📁 Project Structure
 
-Technology Stack
----
-- Node.js + Express
-- TypeScript
-- PostgreSQL (`pg`)
-- JWT (`jsonwebtoken`)
-- bcrypt for password hashing
-- node-cron for scheduled jobs
-
-Setup & Usage
----
-1) Install dependencies
-
-```bash
-npm install
+```
+src/
+├── server.ts                 # Main application entry point
+├── config/
+│   ├── db.ts                # Database connection pool
+│   └── index.ts             # Configuration exports
+├── middleware/
+│   └── verifyRole.ts        # Role-based authentication middleware
+├── modules/
+│   ├── auth/
+│   │   ├── auth.controller.ts
+│   │   ├── auth.service.ts
+│   │   └── auth.routes.ts
+│   ├── user/
+│   │   ├── user.controller.ts
+│   │   ├── user.service.ts
+│   │   └── user.routes.ts
+│   ├── vehicle/
+│   │   ├── vehicle.controller.ts
+│   │   ├── vehicle.service.ts
+│   │   └── vehicle.routes.ts
+│   └── booking/
+│       ├── booking.controller.ts
+│       ├── booking.service.ts
+│       ├── booking.routes.ts
+│       └── autoUpdate.ts     # Automatic booking status updates
+└── type/
+    └── express/
+        └── index.d.ts        # Express type definitions
 ```
 
-2) Create a `.env` file with at minimum:
+## 🚀 Installation
 
-```env
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_HOST=localhost
-DB_PORT=5432
-DB_DATABASE=your_database
-JWT_SECRET=your_jwt_secret
-PORT=5000
-```
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd assignment-2
+   ```
 
-3) Run in development mode
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
+3. **Set up environment variables**
+
+## ▶️ Running the Application
+
+### Development Mode
 ```bash
 npm run dev
 ```
+The application will start with hot-reload enabled using `tsx watch`.
 
-4) API base: `http://localhost:<PORT>/api`
+### Building for Production
+```bash
+npx tsc
+```
 
-If you provide your live URL I will insert it into this file and can add a short deployment note for your chosen provider.
+## 📚 API Endpoints
 
-*** End File
-   npm install
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login (returns JWT token)
+
+### Users
+- `GET /api/users` - Get all users (admin only)
+- `GET /api/users/:userId` - Get user details
+- `PATCH /api/users/:userId` - Update user profile
+- `DELETE /api/users/:userId` - Delete user (blocked if active bookings exist)
+
+### Vehicles
+- `POST /api/vehicles` - Add new vehicle (admin only)
+- `GET /api/vehicles` - Get all vehicles
+- `GET /api/vehicles/:vehicleId` - Get vehicle details
+- `PATCH /api/vehicles/:vehicleId` - Update vehicle (admin only)
+- `DELETE /api/vehicles/:vehicleId` - Delete vehicle (blocked if active bookings exist)
+
+### Bookings
+- `POST /api/bookings` - Create new booking
+- `GET /api/bookings` - Get bookings (admin sees all, customers see own)
+- `PATCH /api/bookings/:bookingId` - Update booking status (cancel/return)
