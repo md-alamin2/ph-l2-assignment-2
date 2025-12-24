@@ -107,29 +107,29 @@ https://vehicle-rentel-backend.vercel.app/api/auth/login
 
 ### Users
 
-Get ⚡ All Users
+Get ⚡ All Users 🛡️ (Admin Only)
 ```
 https://vehicle-rentel-backend.vercel.app/api/users
 ```
 
-Get ⚡ Single User
+Get ⚡ Single User 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/users/:userId
 ```
 
-Update ✏️ User Profile
+Update ✏️ User Profile 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/users/:userId
 ```
 
-Delete 🗑️ User
+Delete 🗑️ User 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/users/:userId
 ```
 
 ### Vehicles
 
-Post ➕ Add New Vehicle
+Post ➕ Add New Vehicle 🛡️ (Admin Only)
 ```
 https://vehicle-rentel-backend.vercel.app/api/vehicles
 ```
@@ -144,29 +144,29 @@ Get ⚡ Single Vehicle
 https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
 ```
 
-Update ✏️ Vehicle
+Update ✏️ Vehicle 🛡️ (Admin Only)
 ```
 https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
 ```
 
-Delete 🗑️ Vehicle
+Delete 🗑️ Vehicle 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
 ```
 
 ### Bookings
 
-Post ➕ Create Booking
+Post ➕ Create Booking 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/bookings
 ```
 
-Get ⚡ All Bookings
+Get ⚡ All Bookings 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/bookings
 ```
 
-Update ✏️ Booking Status
+Update ✏️ Booking Status 🔒 (Customer)
 ```
 https://vehicle-rentel-backend.vercel.app/api/bookings/:bookingId
 ```
