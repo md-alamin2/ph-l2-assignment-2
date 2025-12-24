@@ -170,3 +170,17 @@ Update ✏️ Booking Status
 ```
 https://vehicle-rentel-backend.vercel.app/api/bookings/:bookingId
 ```
+
+---
+
+## 👨‍💻 Developer
+
+**Md. Al-amin**
+- Email: mdalamin22671@gmail.com
+- GitHub: https://github.com/md-alamin2
+
+---
+
+## 📎 License
+
+This project is open source and free to use for learning and portfolio purposes.
