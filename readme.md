@@ -67,7 +67,7 @@ src/
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
+git clone https://github.com/md-alamin2/ph-l2-assignment-2.git
 cd assignment-2
 ```
 
@@ -94,83 +94,23 @@ npx tsc
 ## 📚 API Endpoints
 
 ### Authentication
-
-```bash
-# User registration
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
-
-# User login
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"john@example.com","password":"password123"}'
-```
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login (returns JWT token)
 
 ### Users
-
-```bash
-# Get all users (admin only)
-curl -X GET http://localhost:5000/api/users \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-# Get user details
-curl -X GET http://localhost:5000/api/users/1 \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-# Update user profile
-curl -X PATCH http://localhost:5000/api/users/1 \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"name":"Jane Doe","email":"jane@example.com"}'
-
-# Delete user (blocked if active bookings exist)
-curl -X DELETE http://localhost:5000/api/users/1 \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
+- `GET /api/users` - Get all users (admin only)
+- `GET /api/users/:userId` - Get user details
+- `PATCH /api/users/:userId` - Update user profile
+- `DELETE /api/users/:userId` - Delete user (blocked if active bookings exist)
 
 ### Vehicles
-
-```bash
-# Add new vehicle (admin only)
-curl -X POST http://localhost:5000/api/vehicles \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"vehicle_name":"Tesla Model 3","type":"Electric","registration_number":"ABC123","daily_rent_price":50,"availability_status":"available"}'
-
-# Get all vehicles
-curl -X GET http://localhost:5000/api/vehicles
-
-# Get vehicle details
-curl -X GET http://localhost:5000/api/vehicles/1
-
-# Update vehicle (admin only)
-curl -X PATCH http://localhost:5000/api/vehicles/1 \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"vehicle_name":"Tesla Model S","daily_rent_price":75}'
-
-# Delete vehicle (blocked if active bookings exist)
-curl -X DELETE http://localhost:5000/api/vehicles/1 \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
+- `POST /api/vehicles` - Add new vehicle (admin only)
+- `GET /api/vehicles` - Get all vehicles
+- `GET /api/vehicles/:vehicleId` - Get vehicle details
+- `PATCH /api/vehicles/:vehicleId` - Update vehicle (admin only)
+- `DELETE /api/vehicles/:vehicleId` - Delete vehicle (blocked if active bookings exist)
 
 ### Bookings
-
-```bash
-# Create new booking
-curl -X POST http://localhost:5000/api/bookings \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"customer_id":1,"vehicle_id":1,"rent_start_date":"2025-12-26","rent_end_date":"2025-12-30"}'
-
-# Get bookings (admin sees all, customers see own)
-curl -X GET http://localhost:5000/api/bookings \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-# Update booking status (cancel/return)
-curl -X PATCH http://localhost:5000/api/bookings/1 \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"status":"cancelled"}'
-```
+- `POST /api/bookings` - Create new booking
+- `GET /api/bookings` - Get bookings (admin sees all, customers see own)
+- `PATCH /api/bookings/:bookingId` - Update booking status (cancel/return)
