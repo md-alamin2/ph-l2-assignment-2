@@ -94,23 +94,69 @@ npx tsc
 ## 📚 API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login (returns JWT token)
+
+```bash
+curl -X POST https://vehicle-rentel-backend.vercel.app/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
+
+curl -X POST https://vehicle-rentel-backend.vercel.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"john@example.com","password":"password123"}'
+```
 
 ### Users
-- `GET /api/users` - Get all users (admin only)
-- `GET /api/users/:userId` - Get user details
-- `PATCH /api/users/:userId` - Update user profile
-- `DELETE /api/users/:userId` - Delete user (blocked if active bookings exist)
+
+```bash
+curl -X GET https://vehicle-rentel-backend.vercel.app/api/users \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+curl -X GET https://vehicle-rentel-backend.vercel.app/api/users/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+curl -X PATCH https://vehicle-rentel-backend.vercel.app/api/users/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"name":"Jane Doe","email":"jane@example.com"}'
+
+curl -X DELETE https://vehicle-rentel-backend.vercel.app/api/users/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
 ### Vehicles
-- `POST /api/vehicles` - Add new vehicle (admin only)
-- `GET /api/vehicles` - Get all vehicles
-- `GET /api/vehicles/:vehicleId` - Get vehicle details
-- `PATCH /api/vehicles/:vehicleId` - Update vehicle (admin only)
-- `DELETE /api/vehicles/:vehicleId` - Delete vehicle (blocked if active bookings exist)
+
+```bash
+curl -X POST https://vehicle-rentel-backend.vercel.app/api/vehicles \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"vehicle_name":"Tesla Model 3","type":"Electric","registration_number":"ABC123","daily_rent_price":50,"availability_status":"available"}'
+
+curl -X GET https://vehicle-rentel-backend.vercel.app/api/vehicles
+
+curl -X GET https://vehicle-rentel-backend.vercel.app/api/vehicles/1
+
+curl -X PATCH https://vehicle-rentel-backend.vercel.app/api/vehicles/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"vehicle_name":"Tesla Model S","daily_rent_price":75}'
+
+curl -X DELETE https://vehicle-rentel-backend.vercel.app/api/vehicles/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
 ### Bookings
-- `POST /api/bookings` - Create new booking
-- `GET /api/bookings` - Get bookings (admin sees all, customers see own)
-- `PATCH /api/bookings/:bookingId` - Update booking status (cancel/return)
+
+```bash
+curl -X POST https://vehicle-rentel-backend.vercel.app/api/bookings \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"customer_id":1,"vehicle_id":1,"rent_start_date":"2025-12-26","rent_end_date":"2025-12-30"}'
+
+curl -X GET https://vehicle-rentel-backend.vercel.app/api/bookings \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+curl -X PATCH https://vehicle-rentel-backend.vercel.app/api/bookings/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"status":"cancelled"}'
+```
