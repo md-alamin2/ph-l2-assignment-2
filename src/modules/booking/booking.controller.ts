@@ -130,38 +130,10 @@ const updateBooking = async (req: Request, res: Response) => {
     }
 };
 
-const deleteBooking = async (req: Request, res: Response) => {
-    const { bookingId } = req.params;
-    
-    try {
-        const result = await bookingServices.deleteBooking(bookingId as string);
 
-        if (result.rowCount === 0) {
-            res.status(404).json({
-                success: false,
-                message: 'Booking not found',
-                errors: 'Invalid booking ID'
-            });
-        } else {
-            res.status(200).json({
-                success: true,
-                message: "Booking deleted successfully",
-                data: null
-            });
-        }
-
-    } catch (err: any) {
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-            errors: err.message
-        });
-    }
-};
 
 export const bookingControllers = {
     createBooking,
     getAllBookings,
     updateBooking,
-    deleteBooking
 };

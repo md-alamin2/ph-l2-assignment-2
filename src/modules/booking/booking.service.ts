@@ -95,7 +95,6 @@ const createBooking = async (payload: Record<string, unknown>) => {
         return result;
 
     } catch (error) {
-        await pool.query('ROLLBACK');
         throw error;
     }
 };
@@ -157,12 +156,10 @@ const getAllBookings = async (userRole: string, userId: number) => {
 
 const updateBooking = async (
     bookingId: string,
-    payload: Record<string, unknown>,
+    status: string,
     userRole: string,
     userId: number
 ) => {
-    const { status } = payload;
-
     // Check if booking exists
     const bookingCheck = await pool.query(
         'SELECT * FROM bookings WHERE id = $1',
@@ -190,6 +187,16 @@ const updateBooking = async (
         if (booking.status === 'cancelled' || booking.status === 'returned') {
             throw new Error(`Cannot cancel booking: Booking is already ${booking.status}`);
         }
+
+        // Customer can only cancel before rent start date
+        const rentStartDate = new Date(booking.rent_start_date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        rentStartDate.setHours(0, 0, 0, 0);
+
+        if (today >= rentStartDate) {
+            throw new Error('Cannot cancel booking: You can only cancel before the rent start date');
+        }
     } else if (userRole === 'admin') {
         // Admin can mark as returned
         if (status === 'returned' && booking.status !== 'active') {
@@ -197,20 +204,16 @@ const updateBooking = async (
         }
     }
 
-    const client: PoolClient = await pool.connect();
 
     try {
-        await client.query('BEGIN');
-
         // Update booking status
-        await client.query(
+        await pool.query(
             'UPDATE bookings SET status = $1 WHERE id = $2',
             [status, bookingId]
         );
-
         // Update vehicle availability if cancelled or returned
         if (status === 'cancelled' || status === 'returned') {
-            await client.query(
+            await pool.query(
                 'UPDATE vehicles SET availability_status = $1 WHERE id = $2',
                 ['available', booking.vehicle_id]
             );
@@ -219,7 +222,7 @@ const updateBooking = async (
         // Get updated booking with vehicle info
         let result;
         if (status === 'returned') {
-            result = await client.query(
+            result = await pool.query(
                 `SELECT 
                     b.id,
                     b.customer_id,
@@ -237,7 +240,7 @@ const updateBooking = async (
                 [bookingId]
             );
         } else {
-            result = await client.query(
+            result = await pool.query(
                 `SELECT 
                     id,
                     customer_id,
@@ -252,57 +255,10 @@ const updateBooking = async (
             );
         }
 
-        await client.query('COMMIT');
         return result;
 
     } catch (error) {
-        await client.query('ROLLBACK');
         throw error;
-    } finally {
-        client.release();
-    }
-};
-
-const deleteBooking = async (bookingId: string) => {
-    const client: PoolClient = await pool.connect();
-
-    try {
-        // Check if booking exists
-        const bookingCheck = await pool.query(
-            'SELECT * FROM bookings WHERE id = $1',
-            [bookingId]
-        );
-
-        if (bookingCheck.rows.length === 0) {
-            return { rowCount: 0 };
-        }
-
-        const booking = bookingCheck.rows[0];
-
-        await client.query('BEGIN');
-
-        // If booking is active, update vehicle status back to available
-        if (booking.status === 'active') {
-            await client.query(
-                'UPDATE vehicles SET availability_status = $1 WHERE id = $2',
-                ['available', booking.vehicle_id]
-            );
-        }
-
-        // Delete booking
-        const result = await client.query(
-            'DELETE FROM bookings WHERE id = $1',
-            [bookingId]
-        );
-
-        await client.query('COMMIT');
-        return result;
-
-    } catch (error) {
-        await client.query('ROLLBACK');
-        throw error;
-    } finally {
-        client.release();
     }
 };
 
@@ -310,5 +266,4 @@ export const bookingServices = {
     createBooking,
     getAllBookings,
     updateBooking,
-    deleteBooking
 };
