@@ -97,7 +97,7 @@ const updateVehicle = async(req: Request, res: Response)=>{
             errors: err.message
         })
     }
-}
+};
 
 
 const deleteUser = async (req: Request, res: Response) => {
@@ -133,7 +133,7 @@ const deleteUser = async (req: Request, res: Response) => {
             })
         }
     }
-}
+};
 
 
 export const vehicleControllers = {
