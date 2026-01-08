@@ -43,6 +43,7 @@ const getAllVehicles = async (req: Request, res: Response) => {
     }
 }
 
+
 const getSingleVehicles = async (req: Request, res: Response) => {
     const { vehicleId } = req.params;
     try {
