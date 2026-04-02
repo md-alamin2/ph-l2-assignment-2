@@ -133,17 +133,17 @@ All endpoints are organized by module with clear authentication requirements:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `POST /api/auth/register` | User Registration |
-| POST | `POST /api/auth/login` | User Login |
+| POST | `POST /api/v1/auth/register` | User Registration |
+| POST | `POST /api/v1/auth/login` | User Login |
 
 **Register User**
 ```
-POST https://vehicle-rentel-backend.vercel.app/api/auth/register
+POST https://vehicle-rentel-backend.vercel.app/api/v1/auth/register
 ```
 
 **User Login**
 ```
-POST https://vehicle-rentel-backend.vercel.app/api/auth/login
+POST https://vehicle-rentel-backend.vercel.app/api/v1/auth/login
 ```
 
 ---
@@ -152,29 +152,29 @@ POST https://vehicle-rentel-backend.vercel.app/api/auth/login
 
 | Method | Access | Endpoint | Description |
 |--------|--------|----------|-------------|
-| GET | 🛡️ Admin Only | `/api/users` | Retrieve all users |
-| GET | 🔒 Admin & Customer | `/api/users/:userId` | Get specific user |
-| PATCH | 🔒 Admin & Customer | `/api/users/:userId` | Update user profile |
-| DELETE | 🔒 Admin & Customer | `/api/users/:userId` | Delete user account |
+| GET | 🛡️ Admin Only | `/api/v1/users` | Retrieve all users |
+| GET | 🔒 Admin & Customer | `/api/v1/users/:userId` | Get specific user |
+| PATCH | 🔒 Admin & Customer | `/api/v1/users/:userId` | Update user profile |
+| DELETE | 🔒 Admin & Customer | `/api/v1/users/:userId` | Delete user account |
 
 **Get All Users** 🛡️ (Admin Only)
 ```
-GET https://vehicle-rentel-backend.vercel.app/api/users
+GET https://vehicle-rentel-backend.vercel.app/api/v1/users
 ```
 
 **Get Single User** 🔒 (Admin & Customer)
 ```
-GET https://vehicle-rentel-backend.vercel.app/api/users/:userId
+GET https://vehicle-rentel-backend.vercel.app/api/v1/users/:userId
 ```
 
 **Update User Profile** 🔒 (Admin & Customer)
 ```
-PATCH https://vehicle-rentel-backend.vercel.app/api/users/:userId
+PATCH https://vehicle-rentel-backend.vercel.app/api/v1/users/:userId
 ```
 
 **Delete User** 🔒 (Admin & Customer)
 ```
-DELETE https://vehicle-rentel-backend.vercel.app/api/users/:userId
+DELETE https://vehicle-rentel-backend.vercel.app/api/v1/users/:userId
 ```
 
 ---
@@ -183,35 +183,35 @@ DELETE https://vehicle-rentel-backend.vercel.app/api/users/:userId
 
 | Method | Access | Endpoint | Description |
 |--------|--------|----------|-------------|
-| POST | 🛡️ Admin Only | `/api/vehicles` | Add new vehicle |
-| GET | 🔐 Public | `/api/vehicles` | List all vehicles |
-| GET | 🔐 Public | `/api/vehicles/:vehicleId` | Get vehicle details |
-| PATCH | 🛡️ Admin Only | `/api/vehicles/:vehicleId` | Update vehicle |
-| DELETE | 🔒 Admin & Customer | `/api/vehicles/:vehicleId` | Delete vehicle |
+| POST | 🛡️ Admin Only | `/api/v1/vehicles` | Add new vehicle |
+| GET | 🔐 Public | `/api/v1/vehicles` | List all vehicles |
+| GET | 🔐 Public | `/api/v1/vehicles/:vehicleId` | Get vehicle details |
+| PATCH | 🛡️ Admin Only | `/api/v1/vehicles/:vehicleId` | Update vehicle |
+| DELETE | 🔒 Admin & Customer | `/api/v1/vehicles/:vehicleId` | Delete vehicle |
 
 **Add New Vehicle** 🛡️ (Admin Only)
 ```
-POST https://vehicle-rentel-backend.vercel.app/api/vehicles
+POST https://vehicle-rentel-backend.vercel.app/api/v1/vehicles
 ```
 
 **Get All Vehicles** 🔐
 ```
-GET https://vehicle-rentel-backend.vercel.app/api/vehicles
+GET https://vehicle-rentel-backend.vercel.app/api/v1/vehicles
 ```
 
 **Get Single Vehicle** 🔐
 ```
-GET https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+GET https://vehicle-rentel-backend.vercel.app/api/v1/vehicles/:vehicleId
 ```
 
 **Update Vehicle** 🛡️ (Admin Only)
 ```
-PATCH https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+PATCH https://vehicle-rentel-backend.vercel.app/api/v1/vehicles/:vehicleId
 ```
 
 **Delete Vehicle** 🔒 (Admin & Customer)
 ```
-DELETE https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
+DELETE https://vehicle-rentel-backend.vercel.app/api/v1/vehicles/:vehicleId
 ```
 
 ---
@@ -220,23 +220,23 @@ DELETE https://vehicle-rentel-backend.vercel.app/api/vehicles/:vehicleId
 
 | Method | Access | Endpoint | Description |
 |--------|--------|----------|-------------|
-| POST | 🔒 Admin & Customer | `/api/bookings` | Create new booking |
-| GET | 🔒 Admin & Customer | `/api/bookings` | Get bookings |
-| PATCH | 🔒 Admin & Customer | `/api/bookings/:bookingId` | Update booking status |
+| POST | 🔒 Admin & Customer | `/api/v1/bookings` | Create new booking |
+| GET | 🔒 Admin & Customer | `/api/v1/bookings` | Get bookings |
+| PATCH | 🔒 Admin & Customer | `/api/v1/bookings/:bookingId` | Update booking status |
 
 **Create Booking** 🔒 (Admin & Customer)
 ```
-POST https://vehicle-rentel-backend.vercel.app/api/bookings
+POST https://vehicle-rentel-backend.vercel.app/api/v1/bookings
 ```
 
 **Get All Bookings** 🔒 (Admin & Customer)
 ```
-GET https://vehicle-rentel-backend.vercel.app/api/bookings
+GET https://vehicle-rentel-backend.vercel.app/api/v1/bookings
 ```
 
 **Update Booking Status** 🔒 (Admin & Customer)
 ```
-PATCH https://vehicle-rentel-backend.vercel.app/api/bookings/:bookingId
+PATCH https://vehicle-rentel-backend.vercel.app/api/v1/bookings/:bookingId
 ```
 
 ---
